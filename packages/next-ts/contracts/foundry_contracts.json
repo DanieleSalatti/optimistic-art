@@ -1,15 +1,8 @@
 {
-    "4": {
+    "5": {
         "contracts": {
-            "YourContract": {
-                "address": "0xbbd3d9da3abb32d81732ef64973bfcf1ab4a4b01"
-            }
-        }
-    },
-    "31337": {
-        "contracts": {
-            "YourContract": {
-                "address": "0xBbd3d9Da3aBB32d81732eF64973Bfcf1AB4a4B01"
+            "BridgePassNFT": {
+                "address": "0xacc15164ab66aA233d0872dA5a15B8Df64E439dC"
             }
         }
     }

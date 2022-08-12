@@ -1,5 +1,3 @@
-
-
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import NavigationTabs from "./NavigationTabs";
@@ -11,7 +9,7 @@ const Header: React.FC = () => {
       <div className="flex flex-col items-center">
         <div className="navbar bg-base-100  shadow-sm">
           <div className="navbar-start">
-            <a className="text-sm normal-case btn btn-ghost lg:text-xl">Scaffol-eth-next</a>
+            <a className="text-sm normal-case btn btn-ghost lg:text-xl">🔴 Optimistic Art</a>
           </div>
           <div className="hidden navbar-center lg:flex"></div>
           <div className="navbar-end">

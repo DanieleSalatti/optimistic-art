@@ -1,0 +1,14 @@
+{
+  "name": "Bridge Pass - Tree of Life",
+  "description": "Remember to replace this description",
+  "image": "ipfs://bafybeibdmrqj7rteeonjp4ucpovtwvzomx6liemyqticnnyjn575gyyaea/11.png",
+  "edition": 11,
+  "date": 1660225846393,
+  "attributes": [
+    {
+      "trait_type": "Rarity",
+      "value": "Unique"
+    }
+  ],
+  "compiler": "https://danielesalatti.com"
+}

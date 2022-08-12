@@ -1,7 +1,5 @@
-import { expect, use } from "chai";
-import { deployContract, MockProvider, solidity } from "ethereum-waffle";
-import { Contract } from "ethers";
-import { YourContract, YourContract__factory } from "generated/contract-types";
+import { use } from "chai";
+import { solidity } from "ethereum-waffle";
 
 use(solidity);
 
@@ -11,7 +9,7 @@ use(solidity);
 
 // refer waffle doc for test cases => https://ethereum-waffle.readthedocs.io/en/latest/index.html
 describe("Test  YourContract ", () => {
-  const [wallet, walletTo] = new MockProvider().getWallets();
+  /* const [wallet, walletTo] = new MockProvider().getWallets();
   let yourContract: YourContract | Contract;
 
   before(async () => {
@@ -27,5 +25,5 @@ describe("Test  YourContract ", () => {
   it("get purpose", async () => {
     const purpose = await yourContract.purpose();
     expect(purpose).to.equal("testingPurpose");
-  });
+  });*/
 });

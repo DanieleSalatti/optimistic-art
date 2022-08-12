@@ -46,7 +46,7 @@ const privateKey = account.privateKey;
 // const CONTRACTS_FILE = "./generated/foundry_contracts.json";
 const CONTRACTS_FILE = "../next-ts/contracts/foundry_contracts.json";
 
-const deploy = async (contractName: string, { args }: { args: string[] }): Promise<any> => {
+const deploy = async (contractName: string, { args }: { args: any[] }): Promise<any> => {
   const currentNetwork = NETWORKS[network];
   const networkUrl = currentNetwork.url;
 
