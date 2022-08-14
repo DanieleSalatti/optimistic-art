@@ -3,7 +3,7 @@ import Header from "./Header";
 
 const Layout: React.FC<any> = ({ children }) => {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Header />
       <div className="h-full">{children}</div>
       <Footer />
