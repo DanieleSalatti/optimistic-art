@@ -13,6 +13,7 @@ const Home: NextPage = () => {
   const [cost, setCost] = useState<BigNumber>(BigNumber.from(0));
   const [maxSupply, setMaxSupply] = useState<BigNumber>(BigNumber.from(0));
   const [totalSupply, setTotalSupply] = useState<BigNumber>(BigNumber.from(0));
+  const [minting, setMinting] = useState<boolean>(false);
   const { address, status } = useAccount();
 
   const { data } = useBalance({ addressOrName: address });
@@ -24,7 +25,77 @@ const Home: NextPage = () => {
     contractName: "BridgePassNFT",
   });
 
+  const { config, error, isError } = usePrepareContractWrite({
+    addressOrName: ContractsConfig.BridgePassNFT.json[currentChain?.id ?? 0]?.contracts.BridgePassNFT.address,
+    contractInterface: ["function mint() external payable"],
+    functionName: "mint",
+    // args: [1],
+    overrides: {
+      from: address,
+      value: cost,
+      gasLimit: 1000000,
+    },
+    signer,
+  });
+
+  const { data: ret, write } = useContractWrite({
+    ...config,
+    onSuccess: (tx) => {
+      setMinting(true);
+      toast.promise(tx.wait(), { loading: "Minting...", success: "Minted", error: "Minting failed" }).then(() => {
+        setMinting(false);
+      });
+    },
+    onError: (error) => {
+      console.log("error", error);
+      toast.error(error.message);
+      setMinting(false);
+    },
+  });
+
+  const getCost = useCallback(async (): Promise<BigNumberish> => {
+    const cost = await BridgePassNFT?.cost();
+    setCost(cost ?? BigNumber.from(0));
+    return cost ?? 0;
+  }, [BridgePassNFT]);
+
+  const getMaxSupply = useCallback(async (): Promise<BigNumberish> => {
+    const maxSupply = await BridgePassNFT?.maxSupply();
+    setMaxSupply(maxSupply ?? BigNumber.from(0));
+    return maxSupply ?? 0;
+  }, [BridgePassNFT]);
+
+  const getTotalSupply = useCallback(async (): Promise<BigNumberish> => {
+    const totalSupply = await BridgePassNFT?.totalSupply();
+    setTotalSupply(totalSupply ?? BigNumber.from(0));
+    return totalSupply ?? 0;
+  }, [BridgePassNFT]);
+
+  useEffect(() => {
+    void getCost();
+    void getMaxSupply();
+    void getTotalSupply();
+  }, [BridgePassNFT]);
+
+  if (!currentChain) {
+    console.log("currentChain", currentChain);
+    return (
+      <main>
+        <h2
+          className="
+              text-2xl
+              font-semibold
+              text-center
+              mb-4
+            ">
+          Please connect your wallet
+        </h2>
+      </main>
+    );
+  }
+
   if (!TARGATED_CHAINS.includes(currentChain?.name ?? "")) {
+    console.log("currentChain", currentChain);
     return (
       <main>
         <h2
@@ -58,54 +129,6 @@ const Home: NextPage = () => {
     );
   }
 
-  const { config, error, isError } = usePrepareContractWrite({
-    addressOrName: ContractsConfig.BridgePassNFT.json[currentChain?.id ?? 0].contracts.BridgePassNFT.address,
-    contractInterface: ["function mint() external payable"],
-    functionName: "mint",
-    // args: [1],
-    overrides: {
-      from: address,
-      value: cost,
-      gasLimit: 1000000,
-    },
-    signer,
-  });
-
-  const { data: ret, write } = useContractWrite({
-    ...config,
-    onSuccess: (tx) => {
-      toast.promise(tx.wait(), { loading: "Minting...", success: "Minted", error: "Minting failed" });
-    },
-    onError: (error) => {
-      console.log("error", error);
-      toast.error(error.message);
-    },
-  });
-
-  const getCost = useCallback(async (): Promise<BigNumberish> => {
-    const cost = await BridgePassNFT?.cost();
-    setCost(cost ?? BigNumber.from(0));
-    return cost ?? 0;
-  }, [BridgePassNFT]);
-
-  const getMaxSupply = useCallback(async (): Promise<BigNumberish> => {
-    const maxSupply = await BridgePassNFT?.maxSupply();
-    setMaxSupply(maxSupply ?? BigNumber.from(0));
-    return maxSupply ?? 0;
-  }, [BridgePassNFT]);
-
-  const getTotalSupply = useCallback(async (): Promise<BigNumberish> => {
-    const totalSupply = await BridgePassNFT?.totalSupply();
-    setTotalSupply(totalSupply ?? BigNumber.from(0));
-    return totalSupply ?? 0;
-  }, [BridgePassNFT]);
-
-  useEffect(() => {
-    void getCost();
-    void getMaxSupply();
-    void getTotalSupply();
-  }, [BridgePassNFT]);
-
   return (
     <>
       <main>
@@ -135,10 +158,12 @@ const Home: NextPage = () => {
                 <div className="flex items-center justify-center flex--col mb-4">
                   <img className="w-[75%]" src="/bg-small.gif" />
                 </div>
-                <div className="flex items-center justify-center flex--col mb-4">
+                <div className="flex items-center justify-center flex--col mb-16">
                   <button
-                    className="w-[50%] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    disabled={!address}
+                    className={`w-[50%] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+                      !address || (minting && "opacity-50 cursor-not-allowed disabled")
+                    }`}
+                    disabled={!address || minting}
                     onClick={async () => {
                       if (address && write && maxSupply?.sub(totalSupply ?? 0).gt(0)) {
                         write();
@@ -146,6 +171,48 @@ const Home: NextPage = () => {
                     }}>
                     Mint
                   </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="items-center justify-center mb-4">
+              <div className="w-[100%] text-center mb-4">
+                <h4 className="text-xl font-semibold text-center">FAQ</h4>
+              </div>
+              <div className="items-center justify-center">
+                <div className="w-[100%] mb-4 text-center">
+                  <p>
+                    <strong>What is a Bridge Pass?</strong>
+                  </p>
+                  <p>A Bridge Pass is a unique type of NFT that allows you to bridge your ETH to Optimism..</p>
+                </div>
+                <div className="w-[100%] mb-4 text-center">
+                  <p>
+                    <strong>What is the cost of a Bridge Pass?</strong>
+                  </p>
+                  <p>
+                    The NFT itself is free. The current collection (Tree of Life) requires a payment of 1 ETH, but that
+                    entire amount will be bridged to the address buying the NFT on the Optimism L2. Future collections
+                    might have a different cost.
+                  </p>
+                </div>
+                <div className="w-[100%] mb-4 text-center">
+                  <p>
+                    <strong>What is the maximum supply of Bridge Passes?</strong>
+                  </p>
+                  <p>The current collection is made of a total of {maxSupply.toString()} NFTs.</p>
+                </div>
+                <div className="w-[100%] mb-4 text-center">
+                  <p>
+                    <strong>Can these NFT be traded?</strong>
+                  </p>
+                  <p>
+                    This might change, but the current collection (Tree of Life) is not soulbound - so you can trade it{" "}
+                    <a href="https://mintkit.io" target="_blank">
+                      on your favourite marketplace
+                    </a>
+                    .
+                  </p>
                 </div>
               </div>
             </div>

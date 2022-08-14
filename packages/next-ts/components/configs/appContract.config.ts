@@ -15,7 +15,10 @@ export const ContractsConfig = {
   BridgePassNFT: { factory: BridgePassNFT__factory, json: foundryContracts },
 } as const;
 
-export const TARGATED_CHAINS = [chain.goerli.name, chain.mainnet.name]; // <---- define your target network
+export const TARGATED_CHAINS = [
+  // chain.goerli.name,
+  chain.mainnet.name,
+];
 
 // disabled: define your target names in root .env file inside NEXT_PUBLIC_TARGET_NETWORKS variable
 // const TARGATED_CHAINS = [...(process.env.NEXT_PUBLIC_TARGET_NETWORKS as string).split(",")];
