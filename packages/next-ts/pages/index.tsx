@@ -180,13 +180,13 @@ const Home: NextPage = () => {
                 <h4 className="text-xl font-semibold text-center">FAQ</h4>
               </div>
               <div className="items-center justify-center">
-                <div className="w-[100%] mb-4 text-center">
+                <div className="w-[100%] mb-8 text-center">
                   <p>
                     <strong>What is a Bridge Pass?</strong>
                   </p>
                   <p>A Bridge Pass is a unique type of NFT that allows you to bridge your ETH to Optimism..</p>
                 </div>
-                <div className="w-[100%] mb-4 text-center">
+                <div className="w-[100%] mb-8 text-center">
                   <p>
                     <strong>What is the cost of a Bridge Pass?</strong>
                   </p>
@@ -196,13 +196,13 @@ const Home: NextPage = () => {
                     might have a different cost.
                   </p>
                 </div>
-                <div className="w-[100%] mb-4 text-center">
+                <div className="w-[100%] mb-8 text-center">
                   <p>
                     <strong>What is the maximum supply of Bridge Passes?</strong>
                   </p>
                   <p>The current collection is made of a total of {maxSupply.toString()} NFTs.</p>
                 </div>
-                <div className="w-[100%] mb-4 text-center">
+                <div className="w-[100%] mb-8 text-center">
                   <p>
                     <strong>Can these NFT be traded?</strong>
                   </p>
@@ -210,6 +210,18 @@ const Home: NextPage = () => {
                     This might change, but the current collection (Tree of Life) is not soulbound - so you can trade it{" "}
                     <a href="https://mintkit.io" target="_blank">
                       on your favourite marketplace
+                    </a>
+                    .
+                  </p>
+                </div>
+                <div className="w-[100%] mb-8 text-center">
+                  <p>
+                    <strong>I am an artist and I want to collab</strong>
+                  </p>
+                  <p>
+                    Hit me up on Twitter{" "}
+                    <a href="https://twitter.com/DanieleSalatti" target="_blank">
+                      @DanieleSalatti
                     </a>
                     .
                   </p>

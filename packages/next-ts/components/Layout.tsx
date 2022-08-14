@@ -1,17 +1,15 @@
-import Header from "./Header";
 import Footer from "./Footer";
-import FaucetModal from "./FaucetModal";
+import Header from "./Header";
 
 const Layout: React.FC<any> = ({ children }) => {
-    return (
-        <>
-            <div className="">
-                <Header />
-                <div className="h-[72vh] ">{children}</div>
-                <FaucetModal />
-                {/* <Footer /> */}
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="">
+        <Header />
+        <div className="h-[screen] ">{children}</div>
+        <Footer />
+      </div>
+    </>
+  );
 };
 export default Layout;
