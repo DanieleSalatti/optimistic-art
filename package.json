@@ -11,6 +11,7 @@
   "private": true,
   "scripts": {
     "build": "yarn workspace @scaffold-eth/next-ts build",
+    "export": "yarn workspace @scaffold-eth/next-ts export",
     "serve": "yarn workspace @scaffold-eth/next-ts serve",
     "start": "yarn workspace @scaffold-eth/next-ts start",
     "dev": "yarn workspace @scaffold-eth/next-ts dev",
