@@ -191,9 +191,9 @@ const Home: NextPage = () => {
                     <strong>What is the cost of a Bridge Pass?</strong>
                   </p>
                   <p>
-                    The NFT itself is free. The current collection (Tree of Life) requires a payment of 1 ETH, but that
-                    entire amount will be bridged to the address buying the NFT on the Optimism L2. Future collections
-                    might have a different cost.
+                    The NFT itself is free. The current collection (Tree of Life) requires a payment of{" "}
+                    {formatEther(cost)} ETH, but that entire amount will be bridged to the address buying the NFT on the
+                    Optimism L2. Future collections might have a different cost.
                   </p>
                 </div>
                 <div className="w-[100%] mb-8 text-center">
