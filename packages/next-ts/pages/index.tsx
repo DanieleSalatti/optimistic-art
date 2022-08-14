@@ -42,7 +42,7 @@ const Home: NextPage = () => {
     ...config,
     onSuccess: (tx) => {
       setMinting(true);
-      toast.promise(tx.wait(), { loading: "Minting...", success: "Minted", error: "Minting failed" }).then(() => {
+      void toast.promise(tx.wait(), { loading: "Minting...", success: "Minted", error: "Minting failed" }).then(() => {
         setMinting(false);
       });
     },
@@ -164,7 +164,7 @@ const Home: NextPage = () => {
                       !address || (minting && "opacity-50 cursor-not-allowed disabled")
                     }`}
                     disabled={!address || minting}
-                    onClick={async () => {
+                    onClick={(): void => {
                       if (address && write && maxSupply?.sub(totalSupply ?? 0).gt(0)) {
                         write();
                       }
@@ -208,7 +208,7 @@ const Home: NextPage = () => {
                   </p>
                   <p>
                     This might change, but the current collection (Tree of Life) is not soulbound - so you can trade it{" "}
-                    <a href="https://mintkit.io" target="_blank">
+                    <a href="https://mintkit.io" target="_blank" rel="noreferrer">
                       on your favourite marketplace
                     </a>
                     .
@@ -220,7 +220,7 @@ const Home: NextPage = () => {
                   </p>
                   <p>
                     Hit me up on Twitter{" "}
-                    <a href="https://twitter.com/DanieleSalatti" target="_blank">
+                    <a href="https://twitter.com/DanieleSalatti" target="_blank" rel="noreferrer">
                       @DanieleSalatti
                     </a>
                     .

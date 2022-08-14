@@ -29,6 +29,7 @@ export const targetNetowrks = (requiredChains: string[]): Chain[] => {
   //   type chainNameType = keyof typeof chain;
 
   Object.keys(chain).forEach((chainName: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     if (requiredChains.includes(chain[chainName].name)) {
       targetedChains.push(chain[chainName] as Chain);
     }
