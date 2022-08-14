@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { useCallback, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-import { useAccount, useBalance, useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
+import { useAccount, useBalance, useContractWrite, useNetwork, usePrepareContractWrite, useSigner } from "wagmi";
 import { ContractsConfig, TARGATED_CHAINS } from "../components/configs/appContract.config";
 
 import useAppLoadContract from "../hooks/useAppLoadContract";
@@ -17,6 +17,8 @@ const Home: NextPage = () => {
 
   const { data } = useBalance({ addressOrName: address });
   const { chain: currentChain } = useNetwork();
+
+  const { data: signer } = useSigner();
 
   const BridgePassNFT = useAppLoadContract({
     contractName: "BridgePassNFT",
@@ -58,14 +60,15 @@ const Home: NextPage = () => {
 
   const { config, error, isError } = usePrepareContractWrite({
     addressOrName: ContractsConfig.BridgePassNFT.json[currentChain?.id ?? 0].contracts.BridgePassNFT.address,
-    contractInterface: ["function mint(address) external payable"],
+    contractInterface: ["function mint() external payable"],
     functionName: "mint",
-    args: [address],
+    // args: [1],
     overrides: {
       from: address,
       value: cost,
       gasLimit: 1000000,
     },
+    signer,
   });
 
   const { data: ret, write } = useContractWrite({

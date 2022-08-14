@@ -1,8 +1,15 @@
 {
+    "1": {
+        "contracts": {
+            "BridgePassNFT": {
+                "address": "0x035eBc9776926169200302560A9173C27C12B0aD"
+            }
+        }
+    },
     "5": {
         "contracts": {
             "BridgePassNFT": {
-                "address": "0xacc15164ab66aA233d0872dA5a15B8Df64E439dC"
+                "address": "0x131997d95ceA9a7b51FcC6E0003221C0Dbb6F7E4"
             }
         }
     }

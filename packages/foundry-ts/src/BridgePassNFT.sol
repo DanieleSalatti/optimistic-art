@@ -11,15 +11,16 @@ import "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 import "./interfaces/IL1StandardBridge.sol";
 
-error PAYMENT_TOO_LOW();
-error SOLD_OUT();
-
 contract BridgePassNFT is ERC721, ERC721Royalty, Pausable, Ownable, ReentrancyGuard {
   using Counters for Counters.Counter;
 
+  error PAYMENT_TOO_LOW();
+  error SOLD_OUT();
+
   Counters.Counter public supply;
 
-  IL1StandardBridge public l1StandardBridge;
+  // Goerli: 0x636af16bf2f682dd3109e60102b8e1a089fedaa8
+  address public l1StandardBridge = 0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1;
 
   string baseUri;
 
@@ -27,29 +28,21 @@ contract BridgePassNFT is ERC721, ERC721Royalty, Pausable, Ownable, ReentrancyGu
 
   address public royaltyRecipient = 0x523d007855B3543797E0d3D462CB44B601274819;
   uint96 public royaltyBasisPoints = 500;
-  uint256 public maxSupply;
+  uint256 public maxSupply = 12;
 
   uint256 public maxMintAmountPerTx = 1;
   uint256 public maxMintPerAccount;
 
-  uint256 public l2Gas = 200_000;
+  uint32 public l2Gas = 200_000;
 
-  constructor(
-    string memory _name,
-    string memory _symbol,
-    address _l1StandardBridge,
-    string memory _nftBaseURI,
-    uint256 _maxSupply,
-    address _owner
-  ) ERC721(_name, _symbol) {
-    l1StandardBridge = IL1StandardBridge(_l1StandardBridge);
-    baseUri = _nftBaseURI;
+  constructor() ERC721("Bridge Pass Tree of Life", "BPTOL") {
+    baseUri = "ipfs://QmeiiLFhhbfqT7uaR91jy8w4E1y4nzo59eRahGQmwovfBd/";
+
     _setDefaultRoyalty(royaltyRecipient, royaltyBasisPoints);
 
-    maxSupply = _maxSupply;
     maxMintPerAccount = maxSupply;
 
-    transferOwnership(_owner);
+    transferOwnership(0x523d007855B3543797E0d3D462CB44B601274819);
   }
 
   function totalSupply() public view returns (uint256) {
@@ -72,7 +65,7 @@ contract BridgePassNFT is ERC721, ERC721Royalty, Pausable, Ownable, ReentrancyGu
     royaltyBasisPoints = _royaltyBasisPoints;
   }
 
-  function setL2Gas(uint256 _l2Gas) external onlyOwner {
+  function setL2Gas(uint32 _l2Gas) external onlyOwner {
     l2Gas = _l2Gas;
   }
 
@@ -98,7 +91,7 @@ contract BridgePassNFT is ERC721, ERC721Royalty, Pausable, Ownable, ReentrancyGu
     _safeMint(to, tokenId);
   }
 
-  function mint(address to) external payable {
+  function mint() external payable {
     if (msg.value < cost) {
       revert PAYMENT_TOO_LOW();
     }
@@ -109,7 +102,7 @@ contract BridgePassNFT is ERC721, ERC721Royalty, Pausable, Ownable, ReentrancyGu
 
     supply.increment();
 
-    l1StandardBridge.depositETHTo{ value: msg.value }(to, 200_000, "");
+    IL1StandardBridge(l1StandardBridge).depositETHTo{ value: msg.value }(msg.sender, l2Gas, "");
 
     _safeMint(msg.sender, supply.current());
   }
@@ -133,6 +126,6 @@ contract BridgePassNFT is ERC721, ERC721Royalty, Pausable, Ownable, ReentrancyGu
   }
 
   function tokenURI(uint256 _tokenId) public view override(ERC721) returns (string memory) {
-    return string(abi.encodePacked(super.tokenURI(_tokenId), Strings.toString(_tokenId), ".json"));
+    return string(abi.encodePacked(super.tokenURI(_tokenId), ".json"));
   }
 }

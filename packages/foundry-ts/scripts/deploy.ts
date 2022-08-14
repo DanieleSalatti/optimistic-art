@@ -58,8 +58,8 @@ const deploy = async (contractName: string, { args }: { args: any[] }): Promise<
       "--private-key",
       privateKey,
       `${contractName}`,
-      "--constructor-args",
-      ...args,
+      // "--constructor-args",
+      // ...args,
       network !== "localhost" ? "--verify" : "",
     ]);
     deploy.stdout.on("data", (data: string) => {
